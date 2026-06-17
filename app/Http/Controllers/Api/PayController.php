@@ -38,10 +38,10 @@ class PayController extends Controller
 
 
 
-    public function create()
+    public function create(Request $request)
     {
         
-        $member_id = $_POST['member_id'];
+        $member_id = $request->input('member_id');
         $token = Str::random(32);
         $data = [
             'member_id' => $member_id,
@@ -51,10 +51,10 @@ class PayController extends Controller
         Cache::put($token, $data, 600);
 
         $vnp_TxnRef = rand(1,100000); //Mã giao dịch thanh toán tham chiếu của merchant
-        $vnp_Amount = $_POST['amount']; // Số tiền thanh toán
-        $vnp_Locale = $_POST['language']; //Ngôn ngữ chuyển hướng thanh toán
-        $vnp_BankCode = $_POST['bankCode']; //Mã phương thức thanh toán
-        $vnp_IpAddr = $_SERVER['REMOTE_ADDR']; //IP Khách hàng thanh toán
+        $vnp_Amount = $request->input('amount'); // Số tiền thanh toán
+        $vnp_Locale = $request->input('language'); //Ngôn ngữ chuyển hướng thanh toán
+        $vnp_BankCode = $request->input('bankCode'); //Mã phương thức thanh toán
+        $vnp_IpAddr = $request->ip(); //IP Khách hàng thanh toán
         
         
         
@@ -469,13 +469,13 @@ die();
 
 
 
-                public function createCLB()
+                public function createCLB(Request $request)
     {
         
-        $class_id = $_POST['class_id'];
-        $member_id = $_POST['member_id'];
-        $name_member = $_POST['name_member'];
-        $id_classpayment = $_POST['id_classpayment'];
+        $class_id = $request->input('class_id');
+        $member_id = $request->input('member_id');
+        $name_member = $request->input('name_member');
+        $id_classpayment = $request->input('id_classpayment');
 
         $token = Str::random(32);
         $data = [
@@ -488,10 +488,10 @@ die();
         Cache::put($token, $data, 600);
 
         $vnp_TxnRef = rand(1,100000); //Mã giao dịch thanh toán tham chiếu của merchant
-        $vnp_Amount = $_POST['amount']; // Số tiền thanh toán
-        $vnp_Locale = $_POST['language']; //Ngôn ngữ chuyển hướng thanh toán
-        $vnp_BankCode = $_POST['bankCode']; //Mã phương thức thanh toán
-        $vnp_IpAddr = $_SERVER['REMOTE_ADDR']; //IP Khách hàng thanh toán
+        $vnp_Amount = $request->input('amount'); // Số tiền thanh toán
+        $vnp_Locale = $request->input('language'); //Ngôn ngữ chuyển hướng thanh toán
+        $vnp_BankCode = $request->input('bankCode'); //Mã phương thức thanh toán
+        $vnp_IpAddr = $request->ip(); //IP Khách hàng thanh toán
         
         
         
@@ -729,19 +729,19 @@ public function vnpayreturnCLB(Request $request)
 
 //////////////////////////////////
 
-                public function create_dai()
+                public function create_dai(Request $request)
     {
         
         
-        $token = $_POST['token'];//phần cache
+        $token = $request->input('token');//phần cache
         $data = Cache::get($token);
 
 
         $id_dangkydai_cache = $data['id_dangkydai'];
         
 
-        $id_dai = $_POST['id_dai'];
-        $member_id = $_POST['member_id'];
+        $id_dai = $request->input('id_dai');
+        $member_id = $request->input('member_id');
 
 
         $id_dangkydai = dangkydai::where('id',$id_dangkydai_cache)->first();
@@ -760,10 +760,10 @@ public function vnpayreturnCLB(Request $request)
         Cache::put($token, $data, 600);
 
         $vnp_TxnRef = rand(1,100000); //Mã giao dịch thanh toán tham chiếu của merchant
-        $vnp_Amount = $_POST['amount']; // Số tiền thanh toán
-        $vnp_Locale = $_POST['language']; //Ngôn ngữ chuyển hướng thanh toán
-        $vnp_BankCode = $_POST['bankCode']; //Mã phương thức thanh toán
-        $vnp_IpAddr = $_SERVER['REMOTE_ADDR']; //IP Khách hàng thanh toán
+        $vnp_Amount = $request->input('amount'); // Số tiền thanh toán
+        $vnp_Locale = $request->input('language'); //Ngôn ngữ chuyển hướng thanh toán
+        $vnp_BankCode = $request->input('bankCode'); //Mã phương thức thanh toán
+        $vnp_IpAddr = $request->ip(); //IP Khách hàng thanh toán
         
         
         

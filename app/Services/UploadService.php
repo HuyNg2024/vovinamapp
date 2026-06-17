@@ -53,7 +53,7 @@ class UploadService
         $file->storeAs('', $fileName, 'exam-registration');
         
         
-        return env('APP_URL') . "/public/upload/exam-registration/{$filename}";
+        return env('APP_URL') . "/public/upload/exam-registration/{$fileName}";
     }
 
 

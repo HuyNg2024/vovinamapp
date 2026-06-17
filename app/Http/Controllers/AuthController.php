@@ -534,7 +534,7 @@ class AuthController extends Controller
 
             $userEmail = $user->email;
             $username = $user->username;
-            if($user->id_cub ==0){
+            if($user->id_club ==0){
                 DB::table('class_pending')->where('id_member', $user->id)->delete();
                 //xóa account khách hoàn toàn
                 $user->delete();
