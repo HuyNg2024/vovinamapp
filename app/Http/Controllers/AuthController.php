@@ -9,6 +9,9 @@ use App\Models\Classes;
 use Illuminate\Support\Str;
 //---add recently
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreRegisterRequest;
+use App\Http\Requests\StoreLoginRequest;
+use App\Http\Requests\StoreUpdateInfoRequest;
 use App\Mail\ResetPasswordOTP;
 use App\Mail\AccountCreatedMail;
 use App\Mail\AccountDeletedMail;
@@ -31,25 +34,8 @@ class AuthController extends Controller
     }
 
     // register
-    public function register(Request $request){
-        $validator = validator($request->all(), [
-            'username' => 'required|string|unique:table_atg_members,username',
-            'email' => 'required|string|email|unique:table_atg_members,email',
-            'password' => 'required|string|min:6',
-            'ten' => 'required|string',
-            'dienthoai' => 'required|string|unique:table_atg_members,dienthoai',
-            'diachi' => 'required|string',
-            'gioitinh' => 'required|in:Nam,Nữ',
-            'ngaysinh' => 'required|date_format:Y-m-d|before:today',
-            'hotengiamho' => 'string|required_with:dienthoai_giamho',
-            'dienthoai_giamho' => 'string|required_with:hotengiamho',
-            'chieucao' => 'required|numeric',
-            'cannang' => 'required|numeric'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        }
+    public function register(StoreRegisterRequest $request)
+    {
         $gioitinhValue = $request->gioitinh === 'Nam' ? 1 : 0;
 
         try{
@@ -75,16 +61,8 @@ class AuthController extends Controller
         }
     }
 
-    public function login(Request $request)
+    public function login(StoreLoginRequest $request)
     {
-        $validator = validator($request->all(), [
-            'login' => 'required|string',
-            'password' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        }
 
         $login_type = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) 
             ? 'email' 
@@ -271,26 +249,8 @@ class AuthController extends Controller
         return response()->json($clubsInfo);
     }
 
-    public function updateInfo(Request $request)
-    {   
-        $user = JWTAuth::user();
-        $validator = validator($request->all(), [
-            'username' => 'sometimes|required|string|unique:table_atg_members,username,'. $user->id,
-            'email' => 'sometimes|required|string|email|unique:table_atg_members,email,' . $user->id,
-            'ten' => 'sometimes|required|string',
-            'dienthoai' => 'sometimes|required|string|unique:table_atg_members,dienthoai,' . $user->id,
-            'diachi' => 'sometimes|required|string',
-            'gioitinh' => 'sometimes|required|in:Nam,Nữ',
-            'ngaysinh' => 'sometimes|required|date_format:Y-m-d|before:today',
-            'hotengiamho' => 'sometimes|string|required_with:dienthoai_giamho',
-            'dienthoai_giamho' => 'sometimes|string|required_with:hotengiamho',
-            'chieucao' => 'sometimes|required|numeric',
-            'cannang' => 'sometimes|required|numeric',
-        ]);
-    
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        }
+    public function updateInfo(StoreUpdateInfoRequest $request)
+    {
     
         try {
             $member = JWTAuth::user();

@@ -22,6 +22,11 @@ class table_atg_members extends Authenticatable implements JWTSubject
 
     ]; //chỉ ~ giá trị đc thêm vào table
 
+    protected $hidden = [
+        'password',
+        'active_token',
+    ];
+
     public $timestamps = false; //tắt chế độ created_at & updated_at
 
     protected static function boot() //immediately execute before inserting any records into table
