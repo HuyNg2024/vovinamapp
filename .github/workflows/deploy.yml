@@ -1,0 +1,38 @@
+name: Laravel CD (Deploy to VPS)
+
+on:
+  workflow_run:
+    workflows: ["Laravel CI"]
+    types:
+      - completed
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          cd /var/www/vovinamapp
+          # 1. Kéo code mới nhất từ Github (Pull)
+          git pull origin master
+          
+          # 2. Cài đặt các thư viện mới (nếu có)
+          composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+          
+          # 3. Chạy cập nhật Cơ sở dữ liệu (Migrations)
+          php artisan migrate --force
+          
+          # 4. Xóa Cache để nhận giao diện/tính năng mới
+          php artisan optimize:clear
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache

@@ -27,6 +27,18 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 
+/**
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="VovinamApp API Documentation",
+ *      description="Tài liệu API chính thức cho hệ thống VovinamApp Backend",
+ * )
+ *
+ * @OA\Server(
+ *      url=L5_SWAGGER_CONST_HOST,
+ *      description="API Server"
+ * )
+ */
 class AuthController extends Controller
 {
     public function __construct()
@@ -62,6 +74,30 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/auth/login",
+     *      tags={"Authentication"},
+     *      summary="Đăng nhập tài khoản",
+     *      description="Đăng nhập bằng email, số điện thoại hoặc username và trả về JWT Token",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"login","password"},
+     *              @OA\Property(property="login", type="string", example="test@vovinamapp.com"),
+     *              @OA\Property(property="password", type="string", format="password", example="secret123")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Đăng nhập thành công",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Sai thông tin đăng nhập",
+     *      )
+     * )
+     */
     public function login(StoreLoginRequest $request)
     {
 
