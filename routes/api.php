@@ -16,7 +16,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UploadController;
-use App\Http\Controllers\Api\PayController;
+use App\Http\Controllers\Api\OrderPaymentController;
+use App\Http\Controllers\Api\ClassPaymentController;
+use App\Http\Controllers\Api\BeltPaymentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\CityController;
@@ -442,20 +444,20 @@ Route::group([
 ], function () {
 
 //hàm create nhận dữ liệu từ form và chuyền đến vnpayreturn
-    Route::post('create_payment', [PayController::class, 'create'])->name('create_payment');
-    Route::get('vnpay/return', [PayController::class, 'vnpayreturn'])->name('vnpay.return');
+    Route::post('create_payment', [OrderPaymentController::class, 'create'])->name('create_payment');
+    Route::get('vnpay/return', [OrderPaymentController::class, 'vnpayreturn'])->name('vnpay.return');
 });
 
 
 
 
 //tra cứu hóa đơn
-Route::get('/hoadon', [PayController::class, 'checkhoadon']);
+Route::get('/hoadon', [OrderPaymentController::class, 'checkhoadon']);
 
-Route::get('/cart/show', [PayController::class, 'showcart'])->name('cart.show');
+Route::get('/cart/show', [OrderPaymentController::class, 'showcart'])->name('cart.show');
 
 
-Route::get('/chitiethoadon', [PayController::class, 'chitiet_hoadon']);
+Route::get('/chitiethoadon', [OrderPaymentController::class, 'chitiet_hoadon']);
 
 
 
@@ -466,8 +468,8 @@ Route::get('/chitiethoadon', [PayController::class, 'chitiet_hoadon']);
 
 
 //hàm create nhận dữ liệu từ form và chuyền đến vnpayreturn
-    Route::post('create_paymentCLB', [PayController::class, 'createCLB'])->name('create_paymentCLB');
-    Route::get('vnpayCLB.return', [PayController::class, 'vnpayreturnCLB'])->name('vnpay.returnCLB');
+    Route::post('create_paymentCLB', [ClassPaymentController::class, 'createCLB'])->name('create_paymentCLB');
+    Route::get('vnpayCLB.return', [ClassPaymentController::class, 'vnpayreturnCLB'])->name('vnpay.returnCLB');
 
 
 
@@ -475,8 +477,8 @@ Route::get('/chitiethoadon', [PayController::class, 'chitiet_hoadon']);
 
     //-----======================THANH TOÁN ĐĂNG KÝ LÊN ĐAI=============================---
 
-    Route::post('create_paymentdai', [PayController::class, 'create_dai'])->name('create_paymentdai');
-    Route::get('vnpaydai.return', [PayController::class, 'vnpayreturn_dai'])->name('vnpay.returndai');
+    Route::post('create_paymentdai', [BeltPaymentController::class, 'create_dai'])->name('create_paymentdai');
+    Route::get('vnpaydai.return', [BeltPaymentController::class, 'vnpayreturn_dai'])->name('vnpay.returndai');
 
 
     
@@ -484,6 +486,6 @@ Route::get('/chitiethoadon', [PayController::class, 'chitiet_hoadon']);
 //------------------------------HOANGEND--------------------------
 
 //---------------------PHẦN ĐƠN HÀNG----------------------------
-Route::post('/search_order_HLV', [PayController::class, 'search_order_HLV']);
-Route::post('/search_order_HLV2', [PayController::class, 'search_order_HLV2']);
-Route::post('/update_sanpham', [PayController::class, 'update_sanpham']);
+Route::post('/search_order_HLV', [OrderPaymentController::class, 'search_order_HLV']);
+Route::post('/search_order_HLV2', [OrderPaymentController::class, 'search_order_HLV2']);
+Route::post('/update_sanpham', [OrderPaymentController::class, 'update_sanpham']);
