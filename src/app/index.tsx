@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import apiClient from '../api/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -9,6 +10,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleLogin = async () => {
     if (!username || !password) {
@@ -29,8 +31,7 @@ export default function LoginScreen() {
 
       if (response.data.access_token) {
         await AsyncStorage.setItem('@auth_token', response.data.access_token);
-        // Navigate to Home screen (will be implemented in next phase)
-        alert('Đăng nhập thành công!');
+        router.replace('/(tabs)/home');
       } else {
         setError('Sai thông tin đăng nhập.');
       }
