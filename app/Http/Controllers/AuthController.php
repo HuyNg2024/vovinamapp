@@ -9,6 +9,7 @@ use App\Models\Classes;
 use Illuminate\Support\Str;
 //---add recently
 use Illuminate\Http\Request;
+use App\Http\Resources\MemberResource;
 use App\Http\Requests\StoreRegisterRequest;
 use App\Http\Requests\StoreLoginRequest;
 use App\Http\Requests\StoreUpdateInfoRequest;
@@ -135,7 +136,7 @@ class AuthController extends Controller
             ];
         });
         
-        return response()->json($atg_membersAll, 200);
+        return MemberResource::collection($atg_membersAll);
     }
 
     //get profile via id
@@ -180,7 +181,7 @@ class AuthController extends Controller
                     : ($lang=='en' ? "No information": "Không có thông tin"),
             ];
         
-        return response()->json($memberInfo, 200);
+        return new MemberResource($memberInfo);
     }
 
     //get detail profile myself
@@ -294,7 +295,7 @@ class AuthController extends Controller
             $member->update($updateFields);
             $member->refresh();
 
-            return response()->json(['success' => 'Cập nhật thông tin thành công.','data' => $member], 200);
+            return response()->json(['success' => 'Cập nhật thông tin thành công.','data' => new MemberResource($member)], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

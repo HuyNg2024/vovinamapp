@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Club;
 use Illuminate\Http\Request;
+use App\Http\Resources\ClubResource;
 use App\Models\RegisterClass;
 use App\Models\table_atg_members;
 use App\Models\Club_Pending;
@@ -49,7 +50,7 @@ class ClubController extends Controller
             ];
         });
     
-        return response()->json($clubsInfo);
+        return ClubResource::collection($clubsInfo);
     }
 
     public function getDetailclub(Request $request)
@@ -80,7 +81,7 @@ class ClubController extends Controller
                 'nguoiquanly' => $club->coach->ten ?? 'Không có thông tin',
                 'img' => $club->image ? $club->image : null,
             ];
-        return response()->json($clubsInfo);
+        return ClubResource::collection($clubsInfo);
     }
 
     public function store(Request $request)
@@ -205,7 +206,7 @@ class ClubController extends Controller
         // Cập nhật bản ghi club
         $club->update($request->all()); 
 
-        return response()->json($club);
+        return new ClubResource($club);
     }
 
     public function destroy(string $id)
@@ -341,7 +342,7 @@ class ClubController extends Controller
             ];
         });
 
-        return response()->json($clubsInfo);
+        return ClubResource::collection($clubsInfo);
     }
 
     public function getPendingClubs2()
@@ -367,7 +368,7 @@ class ClubController extends Controller
             ];
         });
 
-        return response()->json($clubsInfo);
+        return ClubResource::collection($clubsInfo);
     }
 
     public function leaveClubPending(Request $request)
@@ -656,7 +657,7 @@ class ClubController extends Controller
             ];
         });
 
-        return response()->json($clubsInfo);
+        return ClubResource::collection($clubsInfo);
     }
 
 

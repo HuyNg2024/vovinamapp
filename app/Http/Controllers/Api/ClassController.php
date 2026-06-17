@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Club;
 use App\Models\Classes; 
 use Illuminate\Http\Request;
+use App\Http\Resources\ClassResource;
 use App\Models\class_payment;
 use App\Models\Class_Pending;
 use App\Models\RegisterClass;
@@ -39,7 +40,7 @@ class ClassController extends Controller
             ];
         });
 
-        return response()->json($classesInfo);
+        return ClassResource::collection($classesInfo);
     }
 
     public function store(Request $request)
@@ -93,7 +94,7 @@ class ClassController extends Controller
 
         });
     
-        return response()->json($classesInfo);
+        return ClassResource::collection($classesInfo);
     }
 
     //Lấy chi tiết thông tin lớp học trong clb ng dùng theo id_class
@@ -131,7 +132,7 @@ class ClassController extends Controller
             'club' =>$lang === 'en' ? $class->club->tenen ?? 'Không có thông tin' : $class->club->ten ?? 'Không có thông tin',
             'giangvien' => $class->coach->ten ?? 'Không có thông tin',
         ];
-        return response()->json($classInfo);
+        return new ClassResource($classInfo);
 
     }
     // ... Yêu cầu tham gia lớp học, tham gia (clb, lớp) cùng lúc và chọn phương thức thanh toán trực tiếp
@@ -211,7 +212,7 @@ class ClassController extends Controller
             ];
         });
 
-        return response()->json($classesInfo);
+        return ClassResource::collection($classesInfo);
     }
 
     //Hủy yêu cầu tham gia lớp theo id_class
@@ -685,7 +686,7 @@ class ClassController extends Controller
     //     ]);
 
     //     $class->update($validatedData);
-    //     return response()->json($class); 
+    //     return new ClassResource($class); 
     // }
 
     public function destroy($id)
@@ -727,7 +728,7 @@ class ClassController extends Controller
             ];
         });
 
-        return response()->json($classesInfo);
+        return ClassResource::collection($classesInfo);
     }
 
     public function leaveClass(Request $request)
@@ -784,7 +785,7 @@ class ClassController extends Controller
             ];
         });
 
-        return response()->json($classesInfo);
+        return ClassResource::collection($classesInfo);
     }
 
     public function getClassesByClubId(Request $request)
@@ -814,7 +815,7 @@ class ClassController extends Controller
             ];
         });
 
-        return response()->json($classesInfo);
+        return ClassResource::collection($classesInfo);
     }
 
 
@@ -846,7 +847,7 @@ class ClassController extends Controller
             'giangvien' => $class->coach->ten ?? 'Không có thông tin',
         ];
 
-        return response()->json($classInfo);
+        return new ClassResource($classInfo);
     }
 
     public function getClassById(Request $request)
@@ -879,7 +880,7 @@ class ClassController extends Controller
             'giangvien' => ($lang === 'en' && $class->coach && $class->coach->tenen) ? $class->coach->tenen : ($class->coach ? $class->coach->ten : 'Không có thông tin'),
         ];
 
-        return response()->json($classInfo);
+        return new ClassResource($classInfo);
     }
 
 
@@ -938,7 +939,7 @@ class ClassController extends Controller
         
         $class->save();
 
-        return response()->json(['success' => 'Lớp học đã được tạo thành công', 'class' => $class], 201);
+        return response()->json(['success' => 'Lớp học đã được tạo thành công', 'class' => new ClassResource($class)], 201);
     }
 
     // Read: Lấy thông tin của một lớp học trong câu lạc bộ của HLV
@@ -954,7 +955,7 @@ class ClassController extends Controller
             return response()->json(['error' => 'Không tìm thấy lớp học hoặc lớp học không thuộc câu lạc bộ của bạn'], 404);
         }
 
-        return response()->json($class);
+        return new ClassResource($class);
     }
 
     // Update: Cập nhật thông tin lớp học trong câu lạc bộ của HLV
@@ -1012,7 +1013,7 @@ class ClassController extends Controller
         $class->save();
 
         $message = $lang == 'vi' ? 'Lớp học đã được cập nhật thành công' : 'Class has been updated successfully';
-        return response()->json(['success' => $message, 'class' => $class]);
+        return response()->json(['success' => $message, 'class' => new ClassResource($class)]);
     }
 
     // Delete: Xóa lớp học trong câu lạc bộ của HLV
@@ -1067,7 +1068,7 @@ class ClassController extends Controller
                           ->where('id_club', $user->id_club)
                           ->get();
 
-        return response()->json($classes);
+        return ClassResource::collection($classes);
     }
 
 }
